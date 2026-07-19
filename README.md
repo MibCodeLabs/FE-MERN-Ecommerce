@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## Frontend Dependencies
 
 - **React Ecosystem** — React, React DOM, React Router DOM for building the UI and navigation.
@@ -5,3 +6,7 @@
 - **UI & Styling** — Material UI, MUI Icons, React Icons, Emotion for components and styling.
 - **Forms & Validation** — React Hook Form, Zod, Hookform Resolvers for form handling and validation.
 - **Notifications** — React Toastify for user feedback messages.
+=======
+# FE-MERN-Ecommerce
+Frontend for MERN ecommerce application
+>>>>>>> 726d5803014964300a8d2be8dc11a854d4fa7671
