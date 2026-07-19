@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ## Frontend Dependencies
 
 - **React Ecosystem** — React, React DOM, React Router DOM for building the UI and navigation.
@@ -9,4 +8,3 @@
 =======
 # FE-MERN-Ecommerce
 Frontend for MERN ecommerce application
->>>>>>> 726d5803014964300a8d2be8dc11a854d4fa7671
