@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ## Frontend Dependencies
 
 - **React Ecosystem** — React, React DOM, React Router DOM for building the UI and navigation.
@@ -9,4 +8,20 @@
 =======
 # FE-MERN-Ecommerce
 Frontend for MERN ecommerce application
->>>>>>> 726d5803014964300a8d2be8dc11a854d4fa7671
+
+
+Folder Structure
+
+Folder/File	Purpose
+app/	Main app setup (routing, providers, global configuration).
+assets/	Images, icons, fonts, and other static files.
+components/	Reusable UI pieces (Button, Navbar, Card, etc.).
+context/	React Context for sharing global state.
+features/	Code grouped by feature (e.g., auth, products, cart).
+hooks/	Custom React hooks (useAuth, useFetch, etc.).
+layouts/	Page layouts (Navbar + Sidebar + Content structure).
+pages/	Full pages/screens mapped to routes (Home, Login, About).
+services/	API calls and external service logic (Axios, fetch).
+themes/	Colors, fonts, styling themes, dark/light mode.
+types/	TypeScript interfaces and types.
+utils/	Helper functions (format date, validate email, etc.).
