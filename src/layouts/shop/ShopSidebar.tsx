@@ -1,14 +1,6 @@
-import { Box } from "@mui/material";
+import SidebarMenu from "../../components/navigation/SidebarMenu";
+import { shopSidebarItems } from "./sidebar.items";
 
 export default function ShopSidebar() {
-    return (
-        <Box
-            component="aside"
-            sx={{
-                width: 240,
-                borderRight: 1,
-                borderColor: "divider",
-            }}
-        />
-    );
+  return <SidebarMenu items={shopSidebarItems} />;
 }

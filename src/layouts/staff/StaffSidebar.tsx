@@ -1,12 +1,7 @@
-import { Box } from "@mui/material";
+import SidebarMenu from "../../components/navigation/SidebarMenu";
+import { staffSidebarItems } from "./sidebar.items";
 
 export default function StaffSidebar() {
-    return (
-        <Box
-            component="aside"
-            sx={{
-                width: 240,
-            }}
-        />
-    );
+     return <SidebarMenu items={staffSidebarItems} />;
+   
 }
