@@ -16,6 +16,7 @@ import { ACCOUNT_TYPES } from "../../constants/constants";
 
 interface LoginProps {
   accountType: AccountType;
+
   onLogin: (accountType: AccountType, email: string, password: string) => void;
 
   showRegister?: boolean;
@@ -115,10 +116,10 @@ export default function Login({
 
         {showRegister && registerPath && (
           <Typography
-          sx={{
-            mt: 3,
-            color: "text.secondary",
-            textAlign:"center"
+            sx={{
+              mt: 3,
+              color: "text.secondary",
+              textAlign: "center",
             }}
           >
             Don't have an account?{" "}
@@ -136,6 +137,7 @@ export default function Login({
           </Typography>
         )}
       </Card>
+
     </Box>
   );
 }
