@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import { NavLink } from "react-router-dom";
 
-import { type SidebarItem } from "../../types/SidebarItem ";
+import { type SidebarItem } from "../../types/SidebarItem";
 type SidebarMenuProps = {
   items: SidebarItem[];
 };

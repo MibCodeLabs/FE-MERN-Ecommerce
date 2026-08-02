@@ -4,12 +4,18 @@ import "./index.css";
 import App from "./App.tsx";
 import { CustomThemeProvider } from "./context/ThemeContext.tsx";
 import { CssBaseline } from "@mui/material";
+import { AuthProvider } from "./context/AuthContext.tsx";
+import { UIProvider } from "./context/UIContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <CustomThemeProvider>
       <CssBaseline />
-      <App />
+      <UIProvider>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </UIProvider>
     </CustomThemeProvider>
   </StrictMode>,
 );

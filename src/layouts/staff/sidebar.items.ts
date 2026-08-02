@@ -10,7 +10,7 @@ import AnalyticsIcon from "@mui/icons-material/Analytics";
 import HistoryIcon from "@mui/icons-material/History";
 import SettingsIcon from "@mui/icons-material/Settings";
 
-import { type SidebarItem } from "../../types/SidebarItem "; 
+import { type SidebarItem } from "../../types/SidebarItem"; 
 export const staffSidebarItems: SidebarItem[] = [
   {
     label: "Dashboard",

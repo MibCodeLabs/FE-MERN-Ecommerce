@@ -6,7 +6,7 @@ import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
 import SettingsIcon from "@mui/icons-material/Settings";
 
-import { type SidebarItem } from "../../types/SidebarItem "; 
+import { type SidebarItem } from "../../types/SidebarItem"; 
 export const shopSidebarItems: SidebarItem[] = [
   {
     label: "Dashboard",

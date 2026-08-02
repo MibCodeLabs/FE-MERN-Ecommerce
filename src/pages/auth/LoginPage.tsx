@@ -13,11 +13,20 @@ import { useNavigate } from "react-router-dom";
 
 import type { AccountType } from "../../types/AccountType";
 import { ACCOUNT_TYPES } from "../../constants/constants";
+import { useUI } from "../../context/UIContext";
+import { getErrorMessage } from "../../utils/GetErrorMessage";
+import { toast } from "react-toastify";
+import type { LoginResponse } from "../../types/LoginResponse";
+import { useAuth } from "../../context/AuthContext";
 
 interface LoginProps {
   accountType: AccountType;
 
-  onLogin: (accountType: AccountType, email: string, password: string) => void;
+  onLogin: (
+    accountType: AccountType,
+    email: string,
+    password: string,
+  ) => Promise<LoginResponse>;
 
   showRegister?: boolean;
   registerPath?: string;
@@ -29,6 +38,8 @@ export default function Login({
   showRegister = false,
   registerPath,
 }: LoginProps) {
+  const { login: authenticate } = useAuth();
+  const { showLoading, hideLoading } = useUI();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -43,8 +54,39 @@ export default function Login({
         ? "Shop Login"
         : "Customer Login";
 
-  function handleSubmit() {
-    onLogin(accountType, email, password);
+  function navigateAfterLogin() {
+    switch (accountType) {
+      case ACCOUNT_TYPES.STAFF:
+        navigate("/staff");
+        break;
+
+      case ACCOUNT_TYPES.SHOP:
+        navigate("/shop");
+        break;
+
+      case ACCOUNT_TYPES.CUSTOMER:
+        navigate("/");
+        break;
+    }
+  }
+
+  async function handleSubmit() {
+    showLoading("Signing in...");
+
+    try {
+      const response = await onLogin(accountType, email, password);
+
+      authenticate(response.accessToken);
+
+      toast.success("Welcome!");
+      navigateAfterLogin()
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    } finally {
+      hideLoading();
+    }
+
+    // onLogin(accountType, email, password);
   }
 
   return (
@@ -137,7 +179,6 @@ export default function Login({
           </Typography>
         )}
       </Card>
-
     </Box>
   );
 }

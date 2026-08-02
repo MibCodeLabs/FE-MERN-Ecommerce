@@ -3,12 +3,20 @@ import Login from "../pages/auth/LoginPage";
 import ProtectedRoute from "../auth/ProtectedRoute";
 
 import { ACCOUNT_TYPES } from "../constants/constants";
-import { handleLogin } from "../utils/HandleLogin";
+import { handleLogin } from "../services/authService";
+import GuestRoute from "../auth/GuestRoute";
 
 export const staffRoutes = [
   {
-    path: "/staff/login",
-    element: <Login accountType={ACCOUNT_TYPES.STAFF} onLogin={handleLogin} />,
+    element: <GuestRoute accountType={ACCOUNT_TYPES.STAFF} />,
+    children: [
+      {
+        path: "/staff/login",
+        element: (
+          <Login accountType={ACCOUNT_TYPES.STAFF} onLogin={handleLogin} />
+        ),
+      },
+    ],
   },
 
   {
@@ -21,7 +29,7 @@ export const staffRoutes = [
         children: [
           {
             index: true,
-            element: <h1>Staff Dashboard</h1>,
+            element: <h1>Staff Dashboard</h1>,//todo: add this
           },
         ],
       },
