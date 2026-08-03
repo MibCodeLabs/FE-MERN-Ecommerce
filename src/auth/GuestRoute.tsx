@@ -1,11 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import type { AccountType } from "../types/AccountType";
 import { ACCOUNT_TYPES } from "../constants/constants";
-
-interface GuestRouteProps {
-  accountType: AccountType;
-}
+import type { AccountType } from "../types/AccountType";
 
 const DASHBOARD_ROUTES: Record<AccountType, string> = {
   [ACCOUNT_TYPES.STAFF]: "/staff",
@@ -13,12 +9,10 @@ const DASHBOARD_ROUTES: Record<AccountType, string> = {
   [ACCOUNT_TYPES.CUSTOMER]: "/",
 };
 
-export default function GuestRoute({
-  accountType,
-}: GuestRouteProps) {
-  const { isAuthenticated } = useAuth();
+export default function GuestRoute() {
+  const { isAuthenticated, accountType } = useAuth();
 
-  if (isAuthenticated) {
+  if (isAuthenticated && accountType) {
     return (
       <Navigate
         to={DASHBOARD_ROUTES[accountType]}

@@ -7,12 +7,13 @@ import {
   type ReactNode,
 } from "react";
 import { tokenStorage } from "../auth/tokenStorage";
+import type { AccountType } from "../types/AccountType";
+import { getAccountTypeFromToken } from "../utils/jwt";
 
 interface AuthContextType {
   isAuthenticated: boolean;
-
+  accountType: AccountType | null;
   login: (accessToken: string) => void;
-
   logout: () => void;
 }
 
@@ -23,27 +24,36 @@ interface AuthProviderProps {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    !!tokenStorage.getAccessToken(),
+  const token = tokenStorage.getAccessToken();
+
+  const [isAuthenticated, setIsAuthenticated] = useState(!!token);
+
+  const [accountType, setAccountType] = useState<AccountType | null>(
+    token ? getAccountTypeFromToken(token) : null,
   );
 
   const login = useCallback((accessToken: string) => {
     tokenStorage.saveAccessToken(accessToken);
+
+    setAccountType(getAccountTypeFromToken(accessToken));
     setIsAuthenticated(true);
   }, []);
 
   const logout = useCallback(() => {
     tokenStorage.removeAccessToken();
+
+    setAccountType(null);
     setIsAuthenticated(false);
   }, []);
 
   const value = useMemo(
     () => ({
       isAuthenticated,
+      accountType,
       login,
       logout,
     }),
-    [isAuthenticated, login, logout],
+    [isAuthenticated, accountType, login, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
