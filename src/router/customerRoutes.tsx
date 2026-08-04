@@ -1,4 +1,5 @@
 import GuestRoute from "../auth/GuestRoute";
+import ProtectedRoute from "../auth/ProtectedRoute";
 import { ACCOUNT_TYPES } from "../constants/constants";
 import CustomerLayout from "../layouts/customer/CustomerLayout";
 import HomePage from "../pages/HomePage";
@@ -8,7 +9,7 @@ import { handleLogin } from "../services/authService";
 
 export const customerRoutes = [
   {
-    element: <GuestRoute accountType={ACCOUNT_TYPES.CUSTOMER} />,
+    element: <GuestRoute />,
     children: [
       {
         path: "/login",
@@ -50,12 +51,17 @@ export const customerRoutes = [
   },
 
   {
-    path: "/",
-    element: <CustomerLayout />,
+    element: <ProtectedRoute accountType={ACCOUNT_TYPES.CUSTOMER} />,
     children: [
       {
-        index: true,
-        element: <HomePage />,
+        path: "/",
+        element: <CustomerLayout />,
+        children: [
+          {
+            index: true,
+            element: <HomePage />,
+          },
+        ],
       },
     ],
   },

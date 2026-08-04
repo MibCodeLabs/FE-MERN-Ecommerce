@@ -9,7 +9,7 @@ import GuestRoute from "../auth/GuestRoute";
 
 export const shopRoutes = [
   {
-    element: <GuestRoute accountType={ACCOUNT_TYPES.SHOP} />,
+    element: <GuestRoute  />,
     children: [
       {
         path: "/shop/login",

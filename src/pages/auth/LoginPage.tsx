@@ -54,7 +54,7 @@ export default function Login({
         ? "Shop Login"
         : "Customer Login";
 
-  function navigateAfterLogin() {
+  function navigateAfterLogin(accountType: AccountType) {
     switch (accountType) {
       case ACCOUNT_TYPES.STAFF:
         navigate("/staff");
@@ -79,14 +79,12 @@ export default function Login({
       authenticate(response.accessToken);
 
       toast.success("Welcome!");
-      navigateAfterLogin()
+      navigateAfterLogin(accountType);
     } catch (error) {
       toast.error(getErrorMessage(error));
     } finally {
       hideLoading();
     }
-
-    // onLogin(accountType, email, password);
   }
 
   return (

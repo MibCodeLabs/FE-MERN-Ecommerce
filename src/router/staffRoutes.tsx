@@ -8,7 +8,7 @@ import GuestRoute from "../auth/GuestRoute";
 
 export const staffRoutes = [
   {
-    element: <GuestRoute accountType={ACCOUNT_TYPES.STAFF} />,
+    element: <GuestRoute />,
     children: [
       {
         path: "/staff/login",
