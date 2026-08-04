@@ -51,7 +51,7 @@ export const customerRoutes = [
   },
 
   {
-    element: <ProtectedRoute accountType={ACCOUNT_TYPES.CUSTOMER} />,
+    element: <ProtectedRoute accountType={ACCOUNT_TYPES.CUSTOMER} allowGuest/>,
     children: [
       {
         path: "/",

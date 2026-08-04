@@ -76,7 +76,7 @@ export default function Login({
     try {
       const response = await onLogin(accountType, email, password);
 
-      authenticate(response.accessToken);
+      authenticate(response.accessToken,response.refreshToken);
 
       toast.success("Welcome!");
       navigateAfterLogin(accountType);

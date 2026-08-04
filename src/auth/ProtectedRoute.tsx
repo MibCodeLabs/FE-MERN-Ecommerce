@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 
 interface ProtectedRouteProps {
   accountType: AccountType;
+  allowGuest?: boolean;
 }
 
 const LOGIN_ROUTES: Record<AccountType, string> = {
@@ -19,8 +20,16 @@ const HOME_ROUTES: Record<AccountType, string> = {
   [ACCOUNT_TYPES.STAFF]: "/staff",
 };
 
-export default function ProtectedRoute({ accountType }: ProtectedRouteProps) {
+export default function ProtectedRoute({
+  accountType,
+  allowGuest = false,
+}: ProtectedRouteProps) {
   const { isAuthenticated, accountType: loggedInAccountType } = useAuth();
+
+  if (!isAuthenticated && allowGuest) {
+    return <Outlet />;
+  }
+
   if (!isAuthenticated) {
     return <Navigate to={LOGIN_ROUTES[accountType]} replace />;
   }

@@ -13,7 +13,7 @@ import { getAccountTypeFromToken } from "../utils/jwt";
 interface AuthContextType {
   isAuthenticated: boolean;
   accountType: AccountType | null;
-  login: (accessToken: string) => void;
+  login: (accessToken: string,refreshToken: string) => void;
   logout: () => void;
 }
 
@@ -32,15 +32,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
     token ? getAccountTypeFromToken(token) : null,
   );
 
-  const login = useCallback((accessToken: string) => {
-    tokenStorage.saveAccessToken(accessToken);
+  const login = useCallback((accessToken: string,refreshToken:string) => {
+    tokenStorage.saveTokens(accessToken,refreshToken);
 
     setAccountType(getAccountTypeFromToken(accessToken));
     setIsAuthenticated(true);
   }, []);
 
   const logout = useCallback(() => {
-    tokenStorage.removeAccessToken();
+    tokenStorage.removeTokens();
 
     setAccountType(null);
     setIsAuthenticated(false);
