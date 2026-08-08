@@ -13,8 +13,8 @@ import { getAccountTypeFromToken } from "../utils/jwt";
 interface AuthContextType {
   isAuthenticated: boolean;
   accountType: AccountType | null;
-  login: (accessToken: string,refreshToken: string) => void;
-  logout: () => void;
+  persistAuth: (accessToken: string,refreshToken: string) => void;
+  clearAuth: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -32,14 +32,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
     token ? getAccountTypeFromToken(token) : null,
   );
 
-  const login = useCallback((accessToken: string,refreshToken:string) => {
+  const persistAuth = useCallback((accessToken: string,refreshToken:string) => {
     tokenStorage.saveTokens(accessToken,refreshToken);
 
     setAccountType(getAccountTypeFromToken(accessToken));
     setIsAuthenticated(true);
   }, []);
 
-  const logout = useCallback(() => {
+  const clearAuth = useCallback(() => {
     tokenStorage.removeTokens();
 
     setAccountType(null);
@@ -50,10 +50,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     () => ({
       isAuthenticated,
       accountType,
-      login,
-      logout,
+      persistAuth,
+      clearAuth,
     }),
-    [isAuthenticated, accountType, login, logout],
+    [isAuthenticated, accountType, persistAuth, clearAuth],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

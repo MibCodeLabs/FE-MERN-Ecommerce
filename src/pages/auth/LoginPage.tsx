@@ -16,7 +16,7 @@ import { ACCOUNT_TYPES } from "../../constants/constants";
 import { useUI } from "../../context/UIContext";
 import { getErrorMessage } from "../../utils/GetErrorMessage";
 import { toast } from "react-toastify";
-import type { LoginResponse } from "../../types/LoginResponse";
+import type { AuthResponse } from "../../types/AuthResponse";
 import { useAuth } from "../../context/AuthContext";
 
 interface LoginProps {
@@ -26,7 +26,7 @@ interface LoginProps {
     accountType: AccountType,
     email: string,
     password: string,
-  ) => Promise<LoginResponse>;
+  ) => Promise<AuthResponse>;
 
   showRegister?: boolean;
   registerPath?: string;
@@ -38,7 +38,7 @@ export default function Login({
   showRegister = false,
   registerPath,
 }: LoginProps) {
-  const { login: authenticate } = useAuth();
+  const { persistAuth } = useAuth();
   const { showLoading, hideLoading } = useUI();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -76,7 +76,7 @@ export default function Login({
     try {
       const response = await onLogin(accountType, email, password);
 
-      authenticate(response.accessToken,response.refreshToken);
+      persistAuth(response.accessToken,response.refreshToken);
 
       toast.success("Welcome!");
       navigateAfterLogin(accountType);

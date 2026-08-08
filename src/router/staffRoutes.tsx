@@ -3,8 +3,8 @@ import Login from "../pages/auth/LoginPage";
 import ProtectedRoute from "../auth/ProtectedRoute";
 
 import { ACCOUNT_TYPES } from "../constants/constants";
-import { handleLogin } from "../services/authService";
 import GuestRoute from "../auth/GuestRoute";
+import { authService } from "../services/authService";
 
 export const staffRoutes = [
   {
@@ -13,7 +13,7 @@ export const staffRoutes = [
       {
         path: "/staff/login",
         element: (
-          <Login accountType={ACCOUNT_TYPES.STAFF} onLogin={handleLogin} />
+          <Login accountType={ACCOUNT_TYPES.STAFF} onLogin={authService.handleLogin} />
         ),
       },
     ],

@@ -5,7 +5,7 @@ import CustomerLayout from "../layouts/customer/CustomerLayout";
 import HomePage from "../pages/HomePage";
 import Login from "../pages/auth/LoginPage";
 import Register from "../pages/auth/RegisterPage";
-import { handleLogin } from "../services/authService";
+import { authService } from "../services/authService";
 
 export const customerRoutes = [
   {
@@ -22,7 +22,7 @@ export const customerRoutes = [
                 accountType={ACCOUNT_TYPES.CUSTOMER}
                 showRegister
                 registerPath="/register"
-                onLogin={handleLogin}
+                onLogin={authService.handleLogin}
               />
             ),
           },
@@ -37,9 +37,7 @@ export const customerRoutes = [
             element: (
               <Register
                 accountType={ACCOUNT_TYPES.CUSTOMER}
-                onRegister={(type, email, password) => {
-                  console.log(type, email, password);
-                }}
+                onRegister={authService.handleRegister}
                 showLogin
                 loginPath="/login"
               />

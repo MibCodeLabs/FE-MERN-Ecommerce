@@ -10,9 +10,14 @@ import {
 
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import type { AccountType } from "../../types/AccountType";
 import { ACCOUNT_TYPES } from "../../constants/constants";
+import { useUI } from "../../context/UIContext";
+import { useAuth } from "../../context/AuthContext";
+import type { AuthResponse } from "../../types/AuthResponse";
+import { getErrorMessage } from "../../utils/GetErrorMessage";
 
 interface RegisterProps {
   accountType: AccountType;
@@ -20,8 +25,7 @@ interface RegisterProps {
     accountType: AccountType,
     email: string,
     password: string,
-    confirmPassword: string
-  ) => void;
+  ) => Promise<AuthResponse>;
 
   showLogin?: boolean;
   loginPath?: string;
@@ -33,6 +37,8 @@ export default function Register({
   showLogin = false,
   loginPath,
 }: RegisterProps) {
+  const { showLoading, hideLoading } = useUI();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -42,20 +48,48 @@ export default function Register({
 
   const navigate = useNavigate();
 
+  if (accountType === ACCOUNT_TYPES.STAFF) {
+    throw new Error("Invalid Registration Account");
+  }
   const registerTitle =
-    accountType === ACCOUNT_TYPES.STAFF
-      ? "Staff Register"
-      : accountType === ACCOUNT_TYPES.SHOP
-        ? "Shop Register"
-        : "Customer Register";
+    accountType === ACCOUNT_TYPES.SHOP ? "Shop Register" : "Customer Register";
 
-  function handleSubmit() {
+  const { persistAuth } = useAuth();
+
+  function navigateAfterRegister(accountType: AccountType) {
+    switch (accountType) {
+      case ACCOUNT_TYPES.STAFF:
+        throw new Error("Invalid Registration Account");
+        break;
+      //todo add the complete details page for both cases
+      case ACCOUNT_TYPES.SHOP:
+        navigate("/shop");
+        break;
+
+      case ACCOUNT_TYPES.CUSTOMER:
+        navigate("/");
+        break;
+    }
+  }
+
+  async function handleSubmit() {
+    showLoading("Registering New Account...");
+
     if (password !== confirmPassword) {
       alert("Passwords do not match");
+      hideLoading();
       return;
     }
-
-    onRegister(accountType, email, password, confirmPassword);
+    try {
+      const response = await onRegister(accountType, email, password);
+      persistAuth(response.accessToken, response.refreshToken);
+      toast.success("Welcome!");
+      navigateAfterRegister(accountType);
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    } finally {
+      hideLoading();
+    }
   }
 
   return (
@@ -109,9 +143,7 @@ export default function Register({
           slotProps={{
             input: {
               endAdornment: (
-                <IconButton
-                  onClick={() => setShowPassword(!showPassword)}
-                >
+                <IconButton onClick={() => setShowPassword(!showPassword)}>
                   {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               ),
@@ -129,15 +161,9 @@ export default function Register({
             input: {
               endAdornment: (
                 <IconButton
-                  onClick={() =>
-                    setShowConfirmPassword(!showConfirmPassword)
-                  }
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
-                  {showConfirmPassword ? (
-                    <VisibilityOff />
-                  ) : (
-                    <Visibility />
-                  )}
+                  {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               ),
             },

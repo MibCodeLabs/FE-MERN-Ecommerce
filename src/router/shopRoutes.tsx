@@ -4,8 +4,8 @@ import ProtectedRoute from "../auth/ProtectedRoute";
 
 import { ACCOUNT_TYPES } from "../constants/constants";
 import Register from "../pages/auth/RegisterPage";
-import { handleLogin } from "../services/authService";
 import GuestRoute from "../auth/GuestRoute";
+import { authService } from "../services/authService";
 
 export const shopRoutes = [
   {
@@ -18,7 +18,7 @@ export const shopRoutes = [
             accountType={ACCOUNT_TYPES.SHOP}
             showRegister
             registerPath="/shop/register"
-            onLogin={handleLogin}
+            onLogin={authService.handleLogin}
           />
         ),
       },
@@ -27,9 +27,7 @@ export const shopRoutes = [
         element: (
           <Register
             accountType={ACCOUNT_TYPES.SHOP}
-            onRegister={(type, email, password) => {
-              console.log(type, email, password);
-            }}
+            onRegister={authService.handleRegister}
             showLogin
             loginPath="/shop/login"
           />

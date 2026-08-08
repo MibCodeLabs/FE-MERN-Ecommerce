@@ -15,7 +15,7 @@ import { createShopAccountMenu } from "./ShopAccountMenu";
 export default function Header() {
   const { mode, toggleTheme } = useThemeMode();
 
-  const { logout } = useAuth();
+  const { clearAuth: logout } = useAuth();
   const navigate = useNavigate();
 
   function handleLogout() {
