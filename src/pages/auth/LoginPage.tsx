@@ -17,7 +17,7 @@ import { useUI } from "../../context/UIContext";
 import { getErrorMessage } from "../../utils/GetErrorMessage";
 import { toast } from "react-toastify";
 import type { AuthResponse } from "../../types/AuthResponse";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../hooks/useAuth";
 
 interface LoginProps {
   accountType: AccountType;

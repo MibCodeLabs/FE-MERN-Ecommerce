@@ -2,7 +2,7 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import AccountMenu from "../../components/common/AccountMenu";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
 import { AppBar, Box, IconButton, Toolbar } from "@mui/material";

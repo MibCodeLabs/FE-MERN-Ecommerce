@@ -1,14 +1,13 @@
 import {
   createContext,
   useCallback,
-  useContext,
   useMemo,
   useState,
   type ReactNode,
 } from "react";
-import { tokenStorage } from "../auth/tokenStorage";
+import { tokenStorage } from "../persistence/tokenStorage";
 import type { AccountType } from "../types/AccountType";
-import { getAccountTypeFromToken } from "../utils/jwt";
+import { getAccountIncompleteStatusFromToken, getAccountTypeFromToken } from "../utils/jwt";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -17,7 +16,7 @@ interface AuthContextType {
   clearAuth: () => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -59,12 +58,4 @@ export function AuthProvider({ children }: AuthProviderProps) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-export function useAuth() {
-  const context = useContext(AuthContext);
 
-  if (!context) {
-    throw new Error("useAuth must be used inside AuthProvider");
-  }
-
-  return context;
-}

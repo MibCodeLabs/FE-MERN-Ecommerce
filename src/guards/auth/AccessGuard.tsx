@@ -1,9 +1,9 @@
 import { Navigate, Outlet } from "react-router-dom";
-import type { AccountType } from "../types/AccountType";
-import { ACCOUNT_TYPES } from "../constants/constants";
-import { useAuth } from "../context/AuthContext";
+import type { AccountType } from "../../types/AccountType";
+import { ACCOUNT_TYPES } from "../../constants/constants";
+import { useAuth } from "../../hooks/useAuth";
 
-interface ProtectedRouteProps {
+interface AccessGuardProps {
   accountType: AccountType;
   allowGuest?: boolean;
 }
@@ -20,10 +20,10 @@ const HOME_ROUTES: Record<AccountType, string> = {
   [ACCOUNT_TYPES.STAFF]: "/staff",
 };
 
-export default function ProtectedRoute({
+export default function AccessGuard({
   accountType,
   allowGuest = false,
-}: ProtectedRouteProps) {
+}: AccessGuardProps) {
   const { isAuthenticated, accountType: loggedInAccountType } = useAuth();
 
   if (!isAuthenticated && allowGuest) {

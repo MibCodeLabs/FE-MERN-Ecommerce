@@ -1,15 +1,16 @@
-import GuestRoute from "../auth/GuestRoute";
-import ProtectedRoute from "../auth/ProtectedRoute";
+import GuestGuard from "../guards/auth/GuestGuard";
+import AccessGuard from "../guards/auth/AccessGuard";
 import { ACCOUNT_TYPES } from "../constants/constants";
 import CustomerLayout from "../layouts/customer/CustomerLayout";
 import HomePage from "../pages/HomePage";
 import Login from "../pages/auth/LoginPage";
 import Register from "../pages/auth/RegisterPage";
 import { authService } from "../services/authService";
+import ProfileCompletionGuard from "../guards/profile/ProfileCompletionGuard";
 
 export const customerRoutes = [
   {
-    element: <GuestRoute />,
+    element: <GuestGuard />,
     children: [
       {
         path: "/login",
@@ -49,15 +50,19 @@ export const customerRoutes = [
   },
 
   {
-    element: <ProtectedRoute accountType={ACCOUNT_TYPES.CUSTOMER} allowGuest/>,
+    element: <AccessGuard accountType={ACCOUNT_TYPES.CUSTOMER} allowGuest />,
     children: [
       {
         path: "/",
         element: <CustomerLayout />,
         children: [
           {
-            index: true,
-            element: <HomePage />,
+            element: <ProfileCompletionGuard />,
+            children: [{ index: true, element: <HomePage /> }],
+          },
+          {
+            path: "customer-profile-completion",
+            element: <h1>customer-profile-completion</h1>,
           },
         ],
       },

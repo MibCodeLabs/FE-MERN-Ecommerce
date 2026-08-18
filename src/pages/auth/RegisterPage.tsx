@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 import type { AccountType } from "../../types/AccountType";
 import { ACCOUNT_TYPES } from "../../constants/constants";
 import { useUI } from "../../context/UIContext";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../hooks/useAuth";
 import type { AuthResponse } from "../../types/AuthResponse";
 import { getErrorMessage } from "../../utils/GetErrorMessage";
 
@@ -83,7 +83,7 @@ export default function Register({
     try {
       const response = await onRegister(accountType, email, password);
       persistAuth(response.accessToken, response.refreshToken);
-      toast.success("Welcome!");
+      toast.success("Registration Successful, Welcome!");
       navigateAfterRegister(accountType);
     } catch (error) {
       toast.error(getErrorMessage(error));

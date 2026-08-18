@@ -1,15 +1,16 @@
 import ShopLayout from "../layouts/shop/ShopLayout";
 import Login from "../pages/auth/LoginPage";
-import ProtectedRoute from "../auth/ProtectedRoute";
+import AccessGuard from "../guards/auth/AccessGuard";
 
 import { ACCOUNT_TYPES } from "../constants/constants";
 import Register from "../pages/auth/RegisterPage";
-import GuestRoute from "../auth/GuestRoute";
+import GuestGuard from "../guards/auth/GuestGuard";
 import { authService } from "../services/authService";
+import ProfileCompletionGuard from "../guards/profile/ProfileCompletionGuard";
 
 export const shopRoutes = [
   {
-    element: <GuestRoute  />,
+    element: <GuestGuard />,
     children: [
       {
         path: "/shop/login",
@@ -37,7 +38,7 @@ export const shopRoutes = [
   },
 
   {
-    element: <ProtectedRoute accountType={ACCOUNT_TYPES.SHOP} />,
+    element: <AccessGuard accountType={ACCOUNT_TYPES.SHOP} />,
 
     children: [
       {
@@ -45,8 +46,12 @@ export const shopRoutes = [
         element: <ShopLayout />,
         children: [
           {
-            index: true,
-            element: <h1>Shop Dashboard</h1>,
+            element: <ProfileCompletionGuard />,
+            children: [{ index: true, element: <h1>Shop Dashboard</h1> }],
+          },
+          {
+            path: "shop-profile-completion",
+            element: <h1>shop-profile-completion</h1>,
           },
         ],
       },
