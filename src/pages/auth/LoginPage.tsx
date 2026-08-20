@@ -16,8 +16,8 @@ import { ACCOUNT_TYPES } from "../../constants/constants";
 import { useUI } from "../../context/UIContext";
 import { getErrorMessage } from "../../utils/GetErrorMessage";
 import { toast } from "react-toastify";
-import type { AuthResponse } from "../../types/AuthResponse";
 import { useAuth } from "../../hooks/useAuth";
+import type { AuthResponse } from "../../api-schema/auth/authResponseSchema";
 
 interface LoginProps {
   accountType: AccountType;

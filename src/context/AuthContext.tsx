@@ -7,16 +7,18 @@ import {
 } from "react";
 import { tokenStorage } from "../persistence/tokenStorage";
 import type { AccountType } from "../types/AccountType";
-import { getAccountIncompleteStatusFromToken, getAccountTypeFromToken } from "../utils/jwt";
+import { getAccountTypeFromToken } from "../utils/jwt";
 
 interface AuthContextType {
   isAuthenticated: boolean;
   accountType: AccountType | null;
-  persistAuth: (accessToken: string,refreshToken: string) => void;
+  persistAuth: (accessToken: string, refreshToken: string) => void;
   clearAuth: () => void;
 }
 
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(
+  undefined,
+);
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -31,12 +33,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
     token ? getAccountTypeFromToken(token) : null,
   );
 
-  const persistAuth = useCallback((accessToken: string,refreshToken:string) => {
-    tokenStorage.saveTokens(accessToken,refreshToken);
+  const persistAuth = useCallback(
+    (accessToken: string, refreshToken: string) => {
+      tokenStorage.saveTokens(accessToken, refreshToken);
 
-    setAccountType(getAccountTypeFromToken(accessToken));
-    setIsAuthenticated(true);
-  }, []);
+      setAccountType(getAccountTypeFromToken(accessToken));
+      setIsAuthenticated(true);
+    },
+    [],
+  );
 
   const clearAuth = useCallback(() => {
     tokenStorage.removeTokens();
@@ -57,5 +62,3 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
-
-

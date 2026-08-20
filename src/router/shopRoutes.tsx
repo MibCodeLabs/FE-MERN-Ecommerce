@@ -7,6 +7,7 @@ import Register from "../pages/auth/RegisterPage";
 import GuestGuard from "../guards/auth/GuestGuard";
 import { authService } from "../services/authService";
 import ProfileCompletionGuard from "../guards/profile/ProfileCompletionGuard";
+import ShopProfileCompletionPage from "../pages/shop/ShopProfileCompletionPage";
 
 export const shopRoutes = [
   {
@@ -51,7 +52,7 @@ export const shopRoutes = [
           },
           {
             path: "shop-profile-completion",
-            element: <h1>shop-profile-completion</h1>,
+            element: <ShopProfileCompletionPage />,
           },
         ],
       },

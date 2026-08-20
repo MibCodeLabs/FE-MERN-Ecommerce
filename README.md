@@ -14,10 +14,11 @@ Folder Structure
 
 Folder/File	Purpose
 app/	Main app setup (routing, providers, global configuration).
+api/ axious API callings
+api-schema/ ZOD schema + type inferred 
 assets/	Images, icons, fonts, and other static files.
 components/	Reusable UI pieces (Button, Navbar, Card, etc.).
 context/	React Context for sharing global state.
-features/	Code grouped by feature (e.g., auth, products, cart).
 hooks/	Custom React hooks (useAuth, useFetch, etc.).
 layouts/	Page layouts (Navbar + Sidebar + Content structure).
 pages/	Full pages/screens mapped to routes (Home, Login, About).

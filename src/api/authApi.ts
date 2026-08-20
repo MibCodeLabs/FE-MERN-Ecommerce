@@ -1,7 +1,9 @@
 import { api } from "./axios";
 import { ACCOUNT_TYPES } from "../constants/constants";
 import type { AccountType } from "../types/AccountType";
-import type { AuthResponse } from "../types/AuthResponse";
+import type { AuthResponse } from "../api-schema/auth/authResponseSchema";
+import type { ShopProfileForm } from "../api-schema/shop/shopProfileSchema";
+import type { ProfileForm } from "../api-schema/customer/customerProfileSchema";
 
 const LOGIN_ENDPOINTS: Record<AccountType, string> = {
   [ACCOUNT_TYPES.STAFF]: "auth/staff/login",
@@ -51,6 +53,13 @@ export const authApi = {
       },
     );
 
+    return response.data;
+  },
+
+  async completeProfile(
+    data: ShopProfileForm | ProfileForm,
+  ): Promise<AuthResponse> {
+    const response = await api.post("auth/complete-details", data);
     return response.data;
   },
 };
