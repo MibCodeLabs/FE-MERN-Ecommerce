@@ -6,9 +6,9 @@ import { tokenStorage } from "../../persistence/tokenStorage";
 import { getAccountIncompleteStatusFromToken } from "../../utils/jwt";
 
 const PROFILE_COMPLETION_ROUTES: Record<AccountType, string> = {
-  [ACCOUNT_TYPES.CUSTOMER]: "/customer-profile-completion",
-  [ACCOUNT_TYPES.SHOP]: "/shop/shop-profile-completion",
-  [ACCOUNT_TYPES.STAFF]: "/staff/staff-profile-completion",
+  [ACCOUNT_TYPES.CUSTOMER]: "/profile-completion",
+  [ACCOUNT_TYPES.SHOP]: "/shop/profile-completion",
+  [ACCOUNT_TYPES.STAFF]: "/staff/profile-completion",
 };
 
 export default function ProfileCompletionGuard() {

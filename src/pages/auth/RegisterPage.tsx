@@ -16,8 +16,8 @@ import type { AccountType } from "../../types/AccountType";
 import { ACCOUNT_TYPES } from "../../constants/constants";
 import { useUI } from "../../context/UIContext";
 import { useAuth } from "../../hooks/useAuth";
-import type { AuthResponse } from "../../types/AuthResponse";
 import { getErrorMessage } from "../../utils/GetErrorMessage";
+import type { AuthResponse } from "../../api-schema/auth/authResponseSchema";
 
 interface RegisterProps {
   accountType: AccountType;
@@ -82,7 +82,7 @@ export default function Register({
     }
     try {
       const response = await onRegister(accountType, email, password);
-      persistAuth(response.accessToken, response.refreshToken);
+      persistAuth(response.accessToken);
       toast.success("Registration Successful, Welcome!");
       navigateAfterRegister(accountType);
     } catch (error) {

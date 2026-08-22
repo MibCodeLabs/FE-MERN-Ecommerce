@@ -24,7 +24,15 @@ export default function AccessGuard({
   accountType,
   allowGuest = false,
 }: AccessGuardProps) {
-  const { isAuthenticated, accountType: loggedInAccountType } = useAuth();
+  const {
+    isAuthenticated,
+    accountType: loggedInAccountType,
+    isAuthLoading,
+  } = useAuth();
+
+  if (isAuthLoading) {
+    return null;
+  }
 
   if (!isAuthenticated && allowGuest) {
     return <Outlet />;

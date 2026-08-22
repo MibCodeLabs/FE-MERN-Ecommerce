@@ -8,6 +8,7 @@ import GuestGuard from "../guards/auth/GuestGuard";
 import { authService } from "../services/authService";
 import ProfileCompletionGuard from "../guards/profile/ProfileCompletionGuard";
 import ShopProfileCompletionPage from "../pages/shop/ShopProfileCompletionPage";
+import ProfileIncompleteGuard from "../guards/profile/ProfileIncompleteGuard";
 
 export const shopRoutes = [
   {
@@ -51,8 +52,12 @@ export const shopRoutes = [
             children: [{ index: true, element: <h1>Shop Dashboard</h1> }],
           },
           {
-            path: "shop-profile-completion",
-            element: <ShopProfileCompletionPage />,
+            path: "profile-completion",
+            element: (
+              <ProfileIncompleteGuard>
+                <ShopProfileCompletionPage />
+              </ProfileIncompleteGuard>
+            ),
           },
         ],
       },

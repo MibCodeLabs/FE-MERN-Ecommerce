@@ -1,4 +1,4 @@
-import { api } from "./axios";
+import { api, publicApi } from "./axios";
 import { ACCOUNT_TYPES } from "../constants/constants";
 import type { AccountType } from "../types/AccountType";
 import type { AuthResponse } from "../api-schema/auth/authResponseSchema";
@@ -20,13 +20,14 @@ const REGISTER_ENDPOINTS: Record<RegisterableAccountType, string> = {
   [ACCOUNT_TYPES.CUSTOMER]: "auth/customer/register",
 };
 
+let refreshPromise: Promise<AuthResponse> | null = null;
 export const authApi = {
   async login(
     accountType: AccountType,
     email: string,
     password: string,
   ): Promise<AuthResponse> {
-    const response = await api.post<AuthResponse>(
+    const response = await publicApi.post<AuthResponse>(
       LOGIN_ENDPOINTS[accountType],
       {
         email,
@@ -45,7 +46,7 @@ export const authApi = {
     if (accountType === ACCOUNT_TYPES.STAFF) {
       throw new Error("Staff cannot Register");
     }
-    const response = await api.post<AuthResponse>(
+    const response = await publicApi.post<AuthResponse>(
       REGISTER_ENDPOINTS[accountType],
       {
         email,
@@ -61,5 +62,22 @@ export const authApi = {
   ): Promise<AuthResponse> {
     const response = await api.post("auth/complete-details", data);
     return response.data;
+  },
+
+  async logout() {
+    await api.post("/auth/token/logout");
+  },
+
+  async refresh(): Promise<AuthResponse> {
+    if (!refreshPromise) {
+      refreshPromise = publicApi
+        .post<AuthResponse>("auth/token/refresh", {})
+        .then((response) => response.data)
+        .finally(() => {
+          refreshPromise = null;
+        });
+    }
+
+    return refreshPromise;
   },
 };

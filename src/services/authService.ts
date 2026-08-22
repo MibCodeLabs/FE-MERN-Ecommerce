@@ -17,7 +17,11 @@ export const authService = {
   },
 
 
-  completeProfile(data: ShopProfileForm | ProfileForm,){
+  async completeProfile(data: ShopProfileForm | ProfileForm,){
     return authApi.completeProfile(data);
+  },
+
+  async logout(){
+    await authApi.logout()
   }
 };

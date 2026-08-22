@@ -10,7 +10,15 @@ const DASHBOARD_ROUTES: Record<AccountType, string> = {
 };
 
 export default function GuestGuard() {
-  const { isAuthenticated, accountType } = useAuth();
+  const {
+    isAuthenticated,
+    accountType,
+    isAuthLoading,
+  } = useAuth();
+
+  if (isAuthLoading) {
+    return null;
+  }
 
   if (isAuthenticated && accountType) {
     return (

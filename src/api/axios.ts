@@ -1,17 +1,15 @@
-import axios, {
-  type AxiosError,
-  type InternalAxiosRequestConfig,
-} from "axios";
+import axios, { type AxiosError, type InternalAxiosRequestConfig } from "axios";
 
 import { BASE_URL } from "../constants/constants";
-import { tokenStorage } from "../persistence/tokenStorage";
 import type { AuthResponse } from "../api-schema/auth/authResponseSchema";
+import { accessTokenManager } from "../services/accessTokenManager";
 
 export const publicApi = axios.create({
   baseURL: BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true,
 });
 
 export const api = axios.create({
@@ -19,15 +17,14 @@ export const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true,
 });
 
 api.interceptors.request.use((config) => {
-  const accessToken = tokenStorage.getAccessToken();
+  const accessToken = accessTokenManager.getToken();
 
   if (!accessToken) {
-    return Promise.reject(
-      new Error("AUTHENTICATION_REQUIRED"),
-    );
+    return Promise.reject(new Error("AUTHENTICATION_REQUIRED"));
   }
 
   config.headers.Authorization = `Bearer ${accessToken}`;
@@ -38,26 +35,17 @@ api.interceptors.request.use((config) => {
 let refreshPromise: Promise<string> | null = null;
 
 async function refreshAccessToken(): Promise<string> {
-  const refreshToken = tokenStorage.getRefreshToken();
-
-  if (!refreshToken) {
-    throw new Error("No refresh token available");
-  }
-
   const response = await publicApi.post<AuthResponse>(
-    "auth/refresh",
+    "auth/token/refresh",
+    {},
     {
-      refreshToken: refreshToken,
+      withCredentials: true,
     },
   );
 
-  const { accessToken, refreshToken: newRefreshToken } =
-    response.data;
+  const { accessToken } = response.data;
 
-  tokenStorage.saveTokens(
-    accessToken,
-    newRefreshToken,
-  );
+  accessTokenManager.setToken(accessToken);
 
   return accessToken;
 }
@@ -68,7 +56,7 @@ api.interceptors.response.use(
 
   async (error: AxiosError) => {
     const originalRequest = error.config as
-      | InternalAxiosRequestConfig & { _retry?: boolean }
+      | (InternalAxiosRequestConfig & { _retry?: boolean })
       | undefined;
 
     if (!originalRequest) {
@@ -93,11 +81,10 @@ api.interceptors.response.use(
         });
       }
       const newAccessToken = await refreshPromise;
-      originalRequest.headers.Authorization =
-        `Bearer ${newAccessToken}`;
+      originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
       return api(originalRequest);
     } catch (refreshError) {
-      tokenStorage.removeTokens();
+      accessTokenManager.setToken(null);
       return Promise.reject(refreshError);
     }
   },

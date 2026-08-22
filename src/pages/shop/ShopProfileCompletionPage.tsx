@@ -43,7 +43,7 @@ export default function ShopProfileCompletionPage() {
 
     try {
       const response = await authService.completeProfile(data);
-      persistAuth(response.accessToken, response.refreshToken);
+      persistAuth(response.accessToken);
 
       toast.success(
         `Welcome ${data.firstName} ${data.lastName} your basic profile has been completed`,

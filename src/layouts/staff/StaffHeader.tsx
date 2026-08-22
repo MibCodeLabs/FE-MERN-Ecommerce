@@ -10,15 +10,22 @@ import AccountMenu from "../../components/common/AccountMenu";
 import { createStaffAccountMenu } from "./StaffAccountMenu";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { authService } from "../../services/authService";
 
 export default function Header() {
   const { mode, toggleTheme } = useThemeMode();
-  const { clearAuth: logout } = useAuth();
+  const { clearAuth } = useAuth();
   const navigate = useNavigate();
 
-  function handleLogout() {
-    logout();
-    navigate("/shop/login");
+  async function handleLogout() {
+    try {
+      await authService.logout();
+    } catch (error) {
+      console.error("Operation failed:", error);
+    } finally {
+      clearAuth();
+      navigate("/staff/login");
+    }
   }
 
   return (

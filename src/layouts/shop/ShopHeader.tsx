@@ -11,16 +11,23 @@ import Logo from "../../components/common/Logo";
 import { useThemeMode } from "../../context/ThemeContext";
 import ShopSwitcher from "./components/ShopSwitcher";
 import { createShopAccountMenu } from "./ShopAccountMenu";
+import { authService } from "../../services/authService";
 
 export default function Header() {
   const { mode, toggleTheme } = useThemeMode();
 
-  const { clearAuth: logout } = useAuth();
+  const { clearAuth } = useAuth();
   const navigate = useNavigate();
 
-  function handleLogout() {
-    logout();
-    navigate("/shop/login");
+  async function handleLogout() {
+    try {
+      await authService.logout();
+    } catch (error) {
+      console.error("Operation failed:", error);
+    } finally {
+      clearAuth();
+      navigate("/shop/login");
+    }
   }
 
   return (
@@ -39,9 +46,7 @@ export default function Header() {
           <NotificationsNoneOutlinedIcon />
         </IconButton>
 
-          <AccountMenu
-            menuItems={createShopAccountMenu(handleLogout)}
-          />
+        <AccountMenu menuItems={createShopAccountMenu(handleLogout)} />
       </Toolbar>
     </AppBar>
   );
